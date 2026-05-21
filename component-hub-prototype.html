@@ -2414,24 +2414,6 @@ function initializeMotionAnimations() {
     });
   });
 
-  // Button Focus Ring Animation
-  const buttons = document.querySelectorAll('button');
-  buttons.forEach(button => {
-    button.addEventListener('focus', () => {
-      gsap.to(button, {
-        duration: 0.2,
-        boxShadow: `0 0 0 3px rgba(242, 101, 34, 0.2), inset 0 0 0 2px #F26522`
-      });
-    });
-
-    button.addEventListener('blur', () => {
-      gsap.to(button, {
-        duration: 0.2,
-        boxShadow: 'none'
-      });
-    });
-  });
-
   // Accessibility Category Expand/Collapse Animation
   const categoryHeaders = document.querySelectorAll('.a11y-cat-header');
   categoryHeaders.forEach(header => {
