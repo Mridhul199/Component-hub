@@ -1,0 +1,2500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Hub — DLS Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --orange: #F26522;
+  --orange-hover: #D9541A;
+  --orange-light: #FEF0E8;
+  --orange-xlight: #FFF8F4;
+  --dark: #1A1A2E;
+  --canvas: #FFFFFF;
+  --surface: #F7F8FA;
+  --surface-2: #F0F2F6;
+  --text-1: #0D1526;
+  --text-2: #4A5568;
+  --text-3: #8A97AC;
+  --border: #E2E8F0;
+  --border-2: #CBD5E0;
+  --nav-w: 240px;
+  --f: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  font-family: var(--f);
+  background: var(--canvas);
+  color: var(--text-1);
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--nav-w);
+  background: var(--canvas);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.wordmark {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wordmark em { font-style: normal; color: var(--orange); }
+.sidebar-ver { font-size: 10px; font-weight: 500; color: var(--text-3); margin-top: 4px; letter-spacing: 0.04em; }
+
+.nav-section { padding: 16px 0 4px; }
+
+.nav-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 0 20px 6px;
+}
+
+.nav-link {
+  display: block;
+  padding: 7px 20px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-2);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 0.2s ease,
+              background 0.2s ease,
+              border-left-color 0.2s ease,
+              transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  position: relative;
+  will-change: color, background;
+}
+
+.nav-link:hover {
+  color: var(--text-1);
+  background: var(--surface);
+  transform: translateX(2px);
+}
+
+.nav-link.active {
+  color: var(--orange);
+  border-left-color: var(--orange);
+  background: var(--orange-xlight);
+  font-weight: 500;
+}
+
+/* ── MAIN ── */
+.main {
+  margin-left: var(--nav-w);
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--canvas);
+  border-bottom: 1px solid var(--border);
+  padding: 56px 56px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle at top right, #FEF0E8 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero h1 {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--text-1);
+  margin-bottom: 16px;
+}
+
+.hero-desc {
+  font-size: 15.5px;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.7;
+  max-width: 480px;
+  margin-bottom: 36px;
+}
+
+/* ── CONTENT ── */
+.content {
+  padding: 0 56px 72px;
+  margin-top: 24px;
+}
+
+.section {
+  padding-top: 56px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 48px;
+}
+
+.section:first-child {
+  padding-top: 0;
+}
+
+.section:last-child { border-bottom: none; }
+
+.section-eyebrow {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--orange);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.section-sub {
+  font-size: 13.5px;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.65;
+  max-width: 540px;
+  margin-bottom: 28px;
+}
+
+/* ── COMPONENT HUB ── */
+.hub-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+
+.hub-tab {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease,
+              border-color 0.3s ease,
+              transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: color, transform;
+  position: relative;
+}
+
+.hub-tab:hover {
+  color: var(--text-1);
+  transform: translateY(-1px);
+}
+
+.hub-tab.active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+.hub-view {
+  display: none;
+  opacity: 0;
+  animation: fadeIn 0.3s ease 0.1s forwards;
+}
+
+.hub-view.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hub-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-pill {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--canvas);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: border-color 0.2s ease,
+              background 0.2s ease,
+              color 0.2s ease,
+              transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.filter-pill:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  transform: translateY(-2px);
+}
+
+.filter-pill.active {
+  background: var(--orange-light);
+  border-color: var(--orange);
+  color: var(--orange);
+  transform: scale(1.05);
+}
+
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.comp-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--canvas);
+  transition: border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease,
+              transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, box-shadow;
+}
+
+.comp-card:hover {
+  border-color: var(--orange);
+  box-shadow: 0 8px 24px rgba(242,101,34,0.15);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.comp-header {
+  padding: 16px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.comp-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.comp-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.comp-label {
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+.comp-value {
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+/* ── BADGES ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: 9999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  height: 21px;
+  letter-spacing: 0.04em;
+}
+
+.bdot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.b-ok { background: #E6F7F1; color: #0A8F5C; }
+.b-ok .bdot { background: #0A8F5C; }
+
+.b-wa { background: #FEF3C7; color: #D97706; }
+.b-wa .bdot { background: #D97706; }
+
+.b-er { background: #FDEDEC; color: #C0392B; }
+.b-er .bdot { background: #C0392B; }
+
+.b-ne { background: #F0F2F6; color: #4A5568; }
+.b-ne .bdot { background: #4A5568; }
+
+.b-st { background: #F0F2F6; color: #4A5568; }
+.b-st .bdot { background: #4A5568; }
+
+.comp-stats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stat-tag {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 6px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  border-radius: 3px;
+}
+
+.comp-footer {
+  padding: 12px 16px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+/* ── METRICS SECTION ── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.metric-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  background: var(--canvas);
+  text-align: center;
+  transition: border-color 0.3s ease,
+              box-shadow 0.3s ease,
+              transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, box-shadow;
+  opacity: 0;
+  transform: translateY(12px) scale(0.95);
+}
+
+.metric-card:hover {
+  border-color: var(--orange);
+  box-shadow: 0 4px 12px rgba(242,101,34,0.12);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 4px;
+}
+
+.metric-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── DESIGN TEAM SECTION ── */
+.task-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.task-column {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--surface);
+  transition: border-color 0.2s ease,
+              box-shadow 0.2s ease;
+  will-change: box-shadow;
+}
+
+.task-column:hover {
+  border-color: var(--border-2);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.task-column-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.task-item {
+  background: var(--canvas);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: var(--text-1);
+  transition: border-color 0.2s ease,
+              box-shadow 0.2s ease,
+              transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  will-change: transform, box-shadow;
+}
+
+.task-item:hover {
+  border-color: var(--orange);
+  box-shadow: 0 2px 8px rgba(242,101,34,0.1);
+  transform: translateY(-2px);
+}
+
+.task-item-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.task-item-meta {
+  font-size: 10px;
+  color: var(--text-3);
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 28px 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-brand {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.footer-brand em {
+  font-style: normal;
+  color: var(--orange);
+}
+
+.footer-meta {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-align: right;
+  line-height: 1.6;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1023px) {
+  .sidebar { transform: translateX(-100%); }
+  .main { margin-left: 0; }
+  .hero { padding: 36px 24px 32px; }
+  .hero h1 { font-size: 34px; }
+  .content { padding: 0 24px 56px; }
+  .footer { padding: 24px; }
+  .comp-grid { grid-template-columns: 1fr; }
+}
+
+/* PAGE NAVIGATION */
+.page-container {
+  display: none;
+  opacity: 0;
+}
+
+.page-container.active {
+  display: block;
+  animation: pageSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes pageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hide hero section */
+.hero { display: none !important; }
+
+/* Page content padding - consistent 24px on all sides */
+#page-overview .content,
+#page-table .content {
+  padding: 24px !important;
+  margin-top: 24px !important;
+}
+
+/* Hide components section and table detail by default */
+#components { display: block; }
+#table-detail { display: none; }
+
+/* When page-table is active */
+#page-table.active #table-detail { display: block; }
+#page-overview.active #components { display: block; }
+
+@media (max-width: 1023px) {
+  .sidebar { transform: translateX(-100%); }
+  .main { margin-left: 0; }
+  .hero { padding: 36px 24px 32px; }
+  .hero h1 { font-size: 34px; }
+  .content { padding: 0 24px 56px; }
+  .footer { padding: 24px; }
+  .comp-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 639px) {
+  .hero { padding: 28px 16px; }
+  .hero h1 { font-size: 28px; }
+  .content { padding: 0 16px 48px; }
+  .comp-grid { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── ACCESSIBILITY MODAL ── */
+#a11yModal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  backdrop-filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              backdrop-filter 0.3s ease;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+#a11yModal.active {
+  opacity: 1;
+}
+
+.a11y-modal-content {
+  background: var(--canvas);
+  border-radius: 12px;
+  max-width: 720px;
+  width: 100%;
+  max-height: 85vh;
+  animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.a11y-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--canvas);
+}
+
+.a11y-modal-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0;
+}
+
+.a11y-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-2);
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.a11y-close-btn:hover { color: var(--text-1); }
+
+.a11y-modal-body {
+  padding: 24px;
+}
+
+.a11y-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 28px;
+  padding: 20px;
+  background: var(--surface);
+  border-radius: 10px;
+}
+
+.a11y-score-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.a11y-score-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--orange);
+  margin-bottom: 4px;
+}
+
+.a11y-score-label {
+  font-size: 12px;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.a11y-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.a11y-stat-item {
+  font-size: 12px;
+  color: var(--text-2);
+  display: flex;
+  justify-content: space-between;
+}
+
+.a11y-stat-value {
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.a11y-categories {
+  margin-bottom: 28px;
+}
+
+.a11y-category {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.a11y-cat-header {
+  width: 100%;
+  padding: 16px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--canvas);
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+  transition: background 0.2s ease,
+              transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: background;
+}
+
+.a11y-cat-header:hover {
+  background: var(--surface);
+  transform: translateX(2px);
+}
+
+.a11y-cat-status {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  background: transparent;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.a11y-cat-status.pass {
+  color: #0A8F5C;
+}
+
+.a11y-cat-status.fail {
+  color: #C0392B;
+}
+
+.a11y-cat-checks {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  transition: max-height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.3s ease,
+              padding 0.3s ease;
+  will-change: max-height, opacity;
+}
+
+.a11y-category.expanded .a11y-cat-checks {
+  max-height: 800px;
+  padding: 16px;
+  opacity: 1;
+}
+
+.a11y-check-item {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-left: 4px solid;
+  border-radius: 6px;
+  background: var(--canvas);
+}
+
+.a11y-check-item.pass {
+  border-left-color: #0A8F5C;
+}
+
+.a11y-check-item.fail {
+  border-left-color: #C0392B;
+}
+
+.a11y-check-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 4px;
+}
+
+.a11y-check-desc {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.a11y-check-wcag {
+  font-size: 10px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+.a11y-findings {
+  padding: 20px;
+  background: #FFF8F4;
+  border-radius: 10px;
+  border-left: 4px solid var(--orange);
+}
+
+.a11y-findings h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 12px;
+}
+
+.a11y-finding-item {
+  margin-bottom: 12px;
+  padding: 12px;
+  background: var(--canvas);
+  border-radius: 6px;
+  border-left: 3px solid #C0392B;
+}
+
+.a11y-finding-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 4px;
+}
+
+.a11y-finding-severity {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  color: #C0392B;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+.a11y-finding-remediation {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+  .a11y-modal-content {
+    max-height: 90vh;
+  }
+  .a11y-summary {
+    grid-template-columns: 1fr;
+  }
+  .a11y-modal-header {
+    padding: 16px;
+  }
+  .a11y-modal-body {
+    padding: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="wordmark">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect width="22" height="22" rx="5" fill="#F26522"/>
+        <rect x="5" y="5" width="5" height="12" rx="1.5" fill="white"/>
+        <rect x="12" y="5" width="5" height="7" rx="1.5" fill="white"/>
+        <rect x="12" y="14" width="5" height="3" rx="1.5" fill="rgba(255,255,255,0.5)"/>
+      </svg>
+      Component<em>Hub</em>
+    </div>
+    <div class="sidebar-ver">v1.0.0 · DLS</div>
+  </div>
+
+  <div class="nav-section" style="padding-top: 24px;">
+    <a href="#overview" class="nav-link active" onclick="backToComponents(event)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-right:8px;vertical-align:middle;">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>Overview
+    </a>
+    <a href="#table" class="nav-link" onclick="showComponentDetail('table', event)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-right:8px;vertical-align:middle;">
+        <path d="M9 3H5a2 2 0 0 0-2 2v4m0 0H3m6 0h6m6 0h3a2 2 0 0 1 2 2v4m0 0v6a2 2 0 0 1-2 2h-4m0 0H9m0 0H5a2 2 0 0 1-2-2v-6m0 0V5"></path>
+        <line x1="3" y1="9" x2="21" y2="9"></line>
+        <line x1="3" y1="15" x2="21" y2="15"></line>
+        <line x1="12" y1="3" x2="12" y2="21"></line>
+      </svg>Table
+    </a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- PAGE: OVERVIEW -->
+  <div class="page-container active" id="page-overview">
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Component<em>Hub</em><br>DLS Overview</h1>
+      <p class="hero-desc">Unified component ecosystem. Status tracking, accessibility metrics, design guidelines, and team task management — all in one place.</p>
+    </div>
+
+    <div class="content">
+
+    <!-- COMPONENT HUB SECTION (List View) -->
+    <div class="section" id="components" class="component-list-view">
+      <div class="section-eyebrow">Component Management</div>
+      <div class="section-title">Component Overview</div>
+      <div class="section-sub">Track component status, accessibility, and usage across projects. Click any component to see detailed information.</div>
+
+      <!-- ROLE-BASED TABS -->
+      <div class="hub-tabs">
+        <button class="hub-tab active" onclick="switchView('stakeholder')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-right:6px;vertical-align:middle;">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>Stakeholders
+        </button>
+        <button class="hub-tab" onclick="switchView('design')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-right:6px;vertical-align:middle;">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+            <path d="M12 5v14"></path>
+            <path d="M19 7v10"></path>
+            <path d="M5 7v10"></path>
+          </svg>Design Team
+        </button>
+        <button class="hub-tab" onclick="switchView('dev')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-right:6px;vertical-align:middle;">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>Dev Team
+        </button>
+      </div>
+
+      <!-- STAKEHOLDER VIEW -->
+      <div class="hub-view active" id="view-stakeholder">
+        <div class="hub-controls">
+          <span style="font-size:12px;font-weight:500;color:var(--text-2);">Filter by:</span>
+          <button class="filter-pill active" onclick="filterStatus(this, 'all')">All</button>
+          <button class="filter-pill" onclick="filterStatus(this, 'live')">Live</button>
+          <button class="filter-pill" onclick="filterStatus(this, 'wip')">WIP</button>
+          <button class="filter-pill" onclick="filterStatus(this, 'deprecated')">Deprecated</button>
+        </div>
+
+        <!-- METRICS -->
+        <div style="margin-bottom:28px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text-3);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.12em;">Key Metrics</div>
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-value">24</div>
+              <div class="metric-label">Total Components</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value">18</div>
+              <div class="metric-label">Live</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value">4</div>
+              <div class="metric-label">In Progress</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value">92%</div>
+              <div class="metric-label">Avg A11y Score</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPONENT GRID -->
+        <div class="comp-grid" id="grid-stakeholder">
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Button</div>
+              <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Status</span>
+                <span class="comp-value">Stable</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">A11y Score</span>
+                <span class="comp-value">AA</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Projects Using</span>
+                <span class="comp-value">12</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Open Issues</span>
+                <span class="comp-value">0</span>
+              </div>
+            </div>
+            <div class="comp-footer">Updated 3 days ago</div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Table</div>
+              <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Status</span>
+                <span class="comp-value">Stable</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">A11y Score</span>
+                <span class="comp-value">AA</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Projects Using</span>
+                <span class="comp-value">8</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Open Issues</span>
+                <span class="comp-value">2</span>
+              </div>
+            </div>
+            <div class="comp-footer">Updated 5 days ago</div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Input Field</div>
+              <span class="badge b-wa"><span class="bdot"></span>WIP</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Status</span>
+                <span class="comp-value">In Progress</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">A11y Score</span>
+                <span class="comp-value">Pending</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Projects Using</span>
+                <span class="comp-value">3</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Open Issues</span>
+                <span class="comp-value">4</span>
+              </div>
+            </div>
+            <div class="comp-footer">Updated 2 days ago</div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Modal</div>
+              <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Status</span>
+                <span class="comp-value">Stable</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">A11y Score</span>
+                <span class="comp-value">AAA</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Projects Using</span>
+                <span class="comp-value">6</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Open Issues</span>
+                <span class="comp-value">1</span>
+              </div>
+            </div>
+            <div class="comp-footer">Updated 1 week ago</div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Badge</div>
+              <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Status</span>
+                <span class="comp-value">Stable</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">A11y Score</span>
+                <span class="comp-value">AA</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Projects Using</span>
+                <span class="comp-value">14</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Open Issues</span>
+                <span class="comp-value">0</span>
+              </div>
+            </div>
+            <div class="comp-footer">Updated 2 weeks ago</div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Toast</div>
+              <span class="badge b-ne"><span class="bdot"></span>DRAFT</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Status</span>
+                <span class="comp-value">Design Review</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">A11y Score</span>
+                <span class="comp-value">Pending</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Projects Using</span>
+                <span class="comp-value">—</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Open Issues</span>
+                <span class="comp-value">3</span>
+              </div>
+            </div>
+            <div class="comp-footer">Updated today</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESIGN TEAM VIEW -->
+      <div class="hub-view" id="view-design">
+        <div class="hub-controls">
+          <span style="font-size:12px;font-weight:500;color:var(--text-2);">Show:</span>
+          <button class="filter-pill active" onclick="filterTask(this, 'all')">All Tasks</button>
+          <button class="filter-pill" onclick="filterTask(this, 'pending')">Pending</button>
+          <button class="filter-pill" onclick="filterTask(this, 'in-progress')">In Progress</button>
+          <button class="filter-pill" onclick="filterTask(this, 'in-review')">In Review</button>
+        </div>
+
+        <div class="task-board">
+          <div class="task-column">
+            <div class="task-column-title">📋 Pending</div>
+            <div class="task-item">
+              <div class="task-item-title">Input Field — A11y Audit</div>
+              <div class="task-item-meta">Priority: High · Effort: 3pts</div>
+            </div>
+            <div class="task-item">
+              <div class="task-item-title">Toast — Design Guidelines</div>
+              <div class="task-item-meta">Priority: Medium · Effort: 2pts</div>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <div class="task-column-title">🔄 In Progress</div>
+            <div class="task-item">
+              <div class="task-item-title">Button — Dos & Don'ts</div>
+              <div class="task-item-meta">Assigned: Sarah · 2 days</div>
+            </div>
+            <div class="task-item">
+              <div class="task-item-title">Input Field — Construction Methods</div>
+              <div class="task-item-meta">Assigned: Mike · 1 day</div>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <div class="task-column-title">👀 In Review</div>
+            <div class="task-item">
+              <div class="task-item-title">Table — Accessibility Checklist</div>
+              <div class="task-item-meta">Reviewer: Design Lead</div>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <div class="task-column-title">✅ Done</div>
+            <div class="task-item">
+              <div class="task-item-title">Badge — Design Finalized</div>
+              <div class="task-item-meta">Completed 3 days ago</div>
+            </div>
+            <div class="task-item">
+              <div class="task-item-title">Modal — Guidelines Approved</div>
+              <div class="task-item-meta">Completed 1 week ago</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text-3);margin-bottom:12px;text-transform:uppercase;">Component Details: Button</div>
+          <div style="display:grid;gap:12px;">
+            <div style="border-bottom:1px solid var(--border);padding-bottom:12px;">
+              <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:6px;">📄 Design Guidelines</div>
+              <div style="font-size:11px;color:var(--text-2);">Figma file · Construction methods with auto-layout rules · 4 variants documented</div>
+            </div>
+            <div style="border-bottom:1px solid var(--border);padding-bottom:12px;">
+              <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:6px;">✓ Dos & Don'ts</div>
+              <div style="font-size:11px;color:var(--text-2);">12 examples with visual guidance · Spacing standards · Color usage rules</div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:6px;">♿ A11y Issues (2 pending fixes)</div>
+              <div style="font-size:11px;color:var(--text-2);">Focus ring contrast · Label association · Priority: High</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEV TEAM VIEW -->
+      <div class="hub-view" id="view-dev">
+        <div class="hub-controls">
+          <span style="font-size:12px;font-weight:500;color:var(--text-2);">Filter by:</span>
+          <button class="filter-pill active" onclick="filterDevs(this, 'all')">All</button>
+          <button class="filter-pill" onclick="filterDevs(this, 'react')">React</button>
+          <button class="filter-pill" onclick="filterDevs(this, 'breaking')">Breaking Changes</button>
+        </div>
+
+        <div class="comp-grid" id="grid-dev">
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Button</div>
+              <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Version</span>
+                <span class="comp-value">v2.1.0</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Framework</span>
+                <span class="comp-value">React</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Last Release</span>
+                <span class="comp-value">2 days ago</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Test Coverage</span>
+                <span class="comp-value">94%</span>
+              </div>
+            </div>
+            <div class="comp-footer">Latest: Fixed focus ring on hover</div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Table</div>
+              <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Version</span>
+                <span class="comp-value">v1.8.2</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Framework</span>
+                <span class="comp-value">React</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Last Release</span>
+                <span class="comp-value">1 week ago</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Test Coverage</span>
+                <span class="comp-value">87%</span>
+              </div>
+            </div>
+            <div class="comp-footer">Latest: Added sorting API</div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Input Field</div>
+              <span class="badge b-wa"><span class="bdot"></span>WIP</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Version</span>
+                <span class="comp-value">v3.0.0-beta</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Framework</span>
+                <span class="comp-value">React</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Breaking Changes</span>
+                <span class="comp-value">3</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Test Coverage</span>
+                <span class="comp-value">72%</span>
+              </div>
+            </div>
+            <div class="comp-footer">In development: New validation API</div>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Modal</div>
+              <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Version</span>
+                <span class="comp-value">v2.0.1</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Framework</span>
+                <span class="comp-value">React</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Last Release</span>
+                <span class="comp-value">3 weeks ago</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Test Coverage</span>
+                <span class="comp-value">91%</span>
+              </div>
+            </div>
+            <div class="comp-footer">Latest: Focus trap improvements</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- END COMPONENTS SECTION -->
+
+    </div><!-- /content -->
+  </div><!-- /page-overview -->
+
+  <!-- PAGE: TABLE -->
+  <div class="page-container" id="page-table">
+    <!-- HERO LANDING SECTION -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:56px;background:linear-gradient(135deg, #FFFFFF 0%, #FFF8F4 100%);border-bottom:1px solid var(--border);">
+      <!-- LEFT: CONTENT -->
+      <div>
+        <div style="font-size:9.5px;font-weight:600;color:var(--orange);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">Component Library</div>
+        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.035em;line-height:1.1;color:var(--text-1);margin-bottom:16px;">Table Component</h1>
+        <p style="font-size:15.5px;font-weight:300;color:var(--text-2);line-height:1.7;margin-bottom:28px;max-width:480px;">Flexible, accessible data table for displaying structured information with sorting, filtering, pagination, row selection, and expandable rows. Built with semantic HTML and full WCAG 2.1 AA compliance.</p>
+
+        <!-- KEY FEATURES -->
+        <div style="margin-bottom:32px;">
+          <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:12px;">Key Features:</div>
+          <ul style="list-style:none;padding:0;gap:8px;display:flex;flex-direction:column;">
+            <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;">
+              <span style="width:6px;height:6px;background:var(--orange);border-radius:50%;flex-shrink:0;"></span>
+              Sortable columns with visual indicators
+            </li>
+            <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;">
+              <span style="width:6px;height:6px;background:var(--orange);border-radius:50%;flex-shrink:0;"></span>
+              Multi-row selection with checkboxes
+            </li>
+            <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;">
+              <span style="width:6px;height:6px;background:var(--orange);border-radius:50%;flex-shrink:0;"></span>
+              Expandable rows for detailed views
+            </li>
+            <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;">
+              <span style="width:6px;height:6px;background:var(--orange);border-radius:50%;flex-shrink:0;"></span>
+              Sticky headers and column pinning
+            </li>
+            <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;">
+              <span style="width:6px;height:6px;background:var(--orange);border-radius:50%;flex-shrink:0;"></span>
+              Responsive design for all devices
+            </li>
+          </ul>
+        </div>
+
+        <!-- STATUS BADGES -->
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+          <span class="badge b-ok"><span class="bdot"></span>v1.2.0</span>
+          <span style="font-size:12px;color:var(--text-3);">Last updated: May 21, 2026</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: TABLE COMPONENT PREVIEW -->
+      <div style="position:relative;overflow:hidden;border-radius:12px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;">
+        <img src="table-preview.png" alt="Table Component Preview" style="width:100%;height:auto;max-height:500px;object-fit:contain;padding:16px;background:var(--canvas);border-radius:8px;" />
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="section" id="table-detail" class="component-detail-view">
+      <div style="margin-bottom:28px;">
+        <div class="section-eyebrow">Overview</div>
+        <div class="section-title">Component Details</div>
+        <div class="section-sub">View component metrics, accessibility audit results, adoption tracking, and team assignments.</div>
+      </div>
+
+      <!-- ROLE-BASED TABS FOR COMPONENT DETAIL -->
+      <div class="hub-tabs">
+        <button class="hub-tab active" onclick="switchComponentView('table-stakeholder')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-right:6px;vertical-align:middle;">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>Stakeholders
+        </button>
+        <button class="hub-tab" onclick="switchComponentView('table-design')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-right:6px;vertical-align:middle;">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+            <path d="M12 5v14"></path>
+            <path d="M19 7v10"></path>
+            <path d="M5 7v10"></path>
+          </svg>Design Team
+        </button>
+        <button class="hub-tab" onclick="switchComponentView('table-dev')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-right:6px;vertical-align:middle;">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>Dev Team
+        </button>
+      </div>
+
+      <!-- STAKEHOLDER VIEW FOR TABLE -->
+      <div class="hub-view active" id="table-stakeholder">
+        <!-- VISUAL METRICS GRID -->
+        <div style="margin-bottom:28px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text-3);margin-bottom:16px;text-transform:uppercase;letter-spacing:0.12em;">Key Metrics</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px;">
+
+            <!-- Accessibility Score -->
+            <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+                <div style="font-size:12px;font-weight:600;color:var(--text-1);">Accessibility</div>
+                <span class="badge b-ok"><span class="bdot"></span>AA</span>
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="font-size:28px;font-weight:700;color:var(--orange);margin-bottom:4px;">92%</div>
+                <div style="font-size:10px;color:var(--text-3);">WCAG 2.1 Compliance</div>
+              </div>
+              <!-- Progress Bar -->
+              <div style="background:var(--surface);height:6px;border-radius:3px;overflow:hidden;margin-bottom:12px;">
+                <div style="background:var(--orange);height:100%;width:92%;border-radius:3px;"></div>
+              </div>
+              <div style="font-size:9px;color:var(--text-3);margin-bottom:12px;">3 issues pending fixes</div>
+              <button onclick="openA11yModal()" style="width:100%;padding:8px 12px;border:1px solid var(--orange);background:transparent;color:var(--orange);font-size:12px;font-weight:600;border-radius:6px;cursor:pointer;transition:background 0.2s,color 0.2s;">View Details</button>
+            </div>
+
+            <!-- Adoption Rate -->
+            <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+                <div style="font-size:12px;font-weight:600;color:var(--text-1);">Adoption Rate</div>
+                <span class="badge b-ok"><span class="bdot"></span>100%</span>
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="font-size:28px;font-weight:700;color:#0A8F5C;margin-bottom:4px;">8/8</div>
+                <div style="font-size:10px;color:var(--text-3);">Projects Using Component</div>
+              </div>
+              <!-- Small bars for adoption -->
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;">
+                <div style="background:#0A8F5C;height:24px;border-radius:4px;"></div>
+                <div style="background:#0A8F5C;height:24px;border-radius:4px;"></div>
+                <div style="background:#0A8F5C;height:24px;border-radius:4px;"></div>
+                <div style="background:#0A8F5C;height:24px;border-radius:4px;"></div>
+                <div style="background:#0A8F5C;height:24px;border-radius:4px;"></div>
+                <div style="background:#0A8F5C;height:24px;border-radius:4px;"></div>
+                <div style="background:#0A8F5C;height:24px;border-radius:4px;"></div>
+                <div style="background:#0A8F5C;height:24px;border-radius:4px;"></div>
+              </div>
+            </div>
+
+            <!-- Test Coverage -->
+            <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+                <div style="font-size:12px;font-weight:600;color:var(--text-1);">Test Coverage</div>
+                <span class="badge b-ok"><span class="bdot"></span>GOOD</span>
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="font-size:28px;font-weight:700;color:#0A8F5C;margin-bottom:4px;">87%</div>
+                <div style="font-size:10px;color:var(--text-3);">Unit & Integration Tests</div>
+              </div>
+              <!-- Progress Bar -->
+              <div style="background:var(--surface);height:6px;border-radius:3px;overflow:hidden;margin-bottom:8px;">
+                <div style="background:#0A8F5C;height:100%;width:87%;border-radius:3px;"></div>
+              </div>
+              <div style="font-size:9px;color:var(--text-3);">456 tests passing</div>
+            </div>
+
+            <!-- Component Health -->
+            <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+                <div style="font-size:12px;font-weight:600;color:var(--text-1);">Health Status</div>
+                <span class="badge b-ok"><span class="bdot"></span>A+</span>
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="font-size:28px;font-weight:700;color:#0A8F5C;margin-bottom:4px;">Stable</div>
+                <div style="font-size:10px;color:var(--text-3);">Component Stability</div>
+              </div>
+              <!-- Status indicators -->
+              <div style="display:flex;gap:8px;margin-top:12px;">
+                <div style="flex:1;background:#0A8F5C;height:4px;border-radius:2px;"></div>
+                <div style="flex:1;background:#0A8F5C;height:4px;border-radius:2px;"></div>
+                <div style="flex:1;background:#0A8F5C;height:4px;border-radius:2px;"></div>
+                <div style="flex:1;background:#0A8F5C;height:4px;border-radius:2px;"></div>
+                <div style="flex:1;background:#0A8F5C;height:4px;border-radius:2px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ADDITIONAL DETAILED METRICS -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;">
+            <div style="border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--canvas);text-align:center;">
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;font-weight:600;">Performance</div>
+              <div style="font-size:22px;font-weight:700;color:var(--text-1);">98ms</div>
+              <div style="font-size:9px;color:var(--text-3);margin-top:4px;">Render Time</div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--canvas);text-align:center;">
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;font-weight:600;">Bundle Size</div>
+              <div style="font-size:22px;font-weight:700;color:var(--text-1);">24.5kb</div>
+              <div style="font-size:9px;color:var(--text-3);margin-top:4px;">Minified & Gzipped</div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--canvas);text-align:center;">
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;font-weight:600;">API Stability</div>
+              <div style="font-size:22px;font-weight:700;color:#0A8F5C;">100%</div>
+              <div style="font-size:9px;color:var(--text-3);margin-top:4px;">Backward Compatible</div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--canvas);text-align:center;">
+              <div style="font-size:11px;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;font-weight:600;">Browser Support</div>
+              <div style="font-size:22px;font-weight:700;color:var(--text-1);">15+</div>
+              <div style="font-size:9px;color:var(--text-3);margin-top:4px;">Modern Browsers</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;">
+          <!-- Overview Card -->
+          <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+            <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:16px;">📊 Component Status</div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:12px;color:var(--text-2);">Status</span>
+                <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;">
+                <span style="font-size:12px;color:var(--text-2);">Version</span>
+                <span style="font-size:12px;font-weight:600;color:var(--text-1);">v1.8.2</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;">
+                <span style="font-size:12px;color:var(--text-2);">Last Updated</span>
+                <span style="font-size:12px;font-weight:600;color:var(--text-1);">5 days ago</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;">
+                <span style="font-size:12px;color:var(--text-2);">Maintenance</span>
+                <span style="font-size:12px;font-weight:600;color:#0A8F5C;">Active</span>
+              </div>
+              <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
+                <div style="font-size:10px;color:var(--text-3);margin-bottom:6px;">Release History</div>
+                <div style="display:flex;gap:4px;">
+                  <div style="background:#0A8F5C;width:20px;height:20px;border-radius:3px;cursor:pointer;" title="v1.8.2 (5d)"></div>
+                  <div style="background:#0A8F5C;width:20px;height:20px;border-radius:3px;cursor:pointer;" title="v1.8.1 (12d)"></div>
+                  <div style="background:#0A8F5C;width:20px;height:20px;border-radius:3px;cursor:pointer;" title="v1.8.0 (19d)"></div>
+                  <div style="background:#0A8F5C;width:20px;height:20px;border-radius:3px;cursor:pointer;" title="v1.7.9 (26d)"></div>
+                  <div style="background:#CBD5E0;width:20px;height:20px;border-radius:3px;opacity:0.5;" title="v1.7.8"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Issues Card -->
+          <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+            <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:12px;">Open Issues</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="border-left:3px solid #D97706;padding-left:10px;">
+                <div style="font-size:11px;font-weight:600;color:var(--text-1);">Sorting on date columns inconsistent</div>
+                <div style="font-size:10px;color:var(--text-3);margin-top:2px;">Medium Priority · Assigned to Dev</div>
+              </div>
+              <div style="border-left:3px solid #D97706;padding-left:10px;">
+                <div style="font-size:11px;font-weight:600;color:var(--text-1);">Sticky header flickering on scroll</div>
+                <div style="font-size:10px;color:var(--text-3);margin-top:2px;">Low Priority · Backlog</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Adoption Card -->
+          <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+            <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:14px;">📈 Adoption Breakdown</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <!-- Project adoption bars -->
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <span style="font-size:11px;color:var(--text-2);">Dashboard</span>
+                  <span style="font-size:10px;font-weight:600;color:var(--text-1);">v1.8.2</span>
+                </div>
+                <div style="background:var(--surface);height:4px;border-radius:2px;overflow:hidden;">
+                  <div style="background:#0A8F5C;height:100%;width:100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <span style="font-size:11px;color:var(--text-2);">Analytics</span>
+                  <span style="font-size:10px;font-weight:600;color:var(--text-1);">v1.8.1</span>
+                </div>
+                <div style="background:var(--surface);height:4px;border-radius:2px;overflow:hidden;">
+                  <div style="background:#0A8F5C;height:100%;width:95%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <span style="font-size:11px;color:var(--text-2);">Reports</span>
+                  <span style="font-size:10px;font-weight:600;color:var(--text-1);">v1.8.2</span>
+                </div>
+                <div style="background:var(--surface);height:4px;border-radius:2px;overflow:hidden;">
+                  <div style="background:#0A8F5C;height:100%;width:100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <span style="font-size:11px;color:var(--text-2);">Settings</span>
+                  <span style="font-size:10px;font-weight:600;color:var(--text-1);">v1.7.9</span>
+                </div>
+                <div style="background:var(--surface);height:4px;border-radius:2px;overflow:hidden;">
+                  <div style="background:#D97706;height:100%;width:78%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <span style="font-size:11px;color:var(--text-2);">Admin Panel</span>
+                  <span style="font-size:10px;font-weight:600;color:var(--text-1);">v1.8.0</span>
+                </div>
+                <div style="background:var(--surface);height:4px;border-radius:2px;overflow:hidden;">
+                  <div style="background:#0A8F5C;height:100%;width:100%;"></div>
+                </div>
+              </div>
+            </div>
+            <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:12px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:10px;">
+                <div style="text-align:center;padding:8px;background:var(--surface);border-radius:6px;">
+                  <div style="font-weight:600;color:var(--text-1);">8</div>
+                  <div style="color:var(--text-3);margin-top:2px;">Active Projects</div>
+                </div>
+                <div style="text-align:center;padding:8px;background:var(--surface);border-radius:6px;">
+                  <div style="font-weight:600;color:var(--text-1);">+3</div>
+                  <div style="color:var(--text-3);margin-top:2px;">Updates pending</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Features Card -->
+          <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+            <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:14px;">✨ Feature Matrix</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;background:#0A8F5C;border-radius:50%;flex-shrink:0;"></div>
+                <span style="font-size:11px;color:var(--text-2);">Responsive layout</span>
+                <span style="font-size:9px;color:var(--text-3);margin-left:auto;">Mobile, Tablet, Desktop</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;background:#0A8F5C;border-radius:50%;flex-shrink:0;"></div>
+                <span style="font-size:11px;color:var(--text-2);">Sortable columns</span>
+                <span style="font-size:9px;color:var(--text-3);margin-left:auto;">WCAG 2.1 AA</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;background:#0A8F5C;border-radius:50%;flex-shrink:0;"></div>
+                <span style="font-size:11px;color:var(--text-2);">Sticky header & column</span>
+                <span style="font-size:9px;color:var(--text-3);margin-left:auto;">Performance optimized</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;background:#0A8F5C;border-radius:50%;flex-shrink:0;"></div>
+                <span style="font-size:11px;color:var(--text-2);">Row selection</span>
+                <span style="font-size:9px;color:var(--text-3);margin-left:auto;">Bulk actions</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;background:#0A8F5C;border-radius:50%;flex-shrink:0;"></div>
+                <span style="font-size:11px;color:var(--text-2);">Pagination</span>
+                <span style="font-size:9px;color:var(--text-3);margin-left:auto;">Lazy loading support</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;background:#0A8F5C;border-radius:50%;flex-shrink:0;"></div>
+                <span style="font-size:11px;color:var(--text-2);">Dark mode</span>
+                <span style="font-size:9px;color:var(--text-3);margin-left:auto;">Full support</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;background:#0A8F5C;border-radius:50%;flex-shrink:0;"></div>
+                <span style="font-size:11px;color:var(--text-2);">Custom rendering</span>
+                <span style="font-size:9px;color:var(--text-3);margin-left:auto;">Per-cell customization</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESIGN TEAM VIEW FOR TABLE -->
+      <div class="hub-view" id="table-design">
+        <div class="task-board">
+          <div class="task-column">
+            <div class="task-column-title">📋 Pending</div>
+            <div class="task-item">
+              <div class="task-item-title">Accessibility Audit</div>
+              <div class="task-item-meta">Priority: High · Effort: 5pts</div>
+            </div>
+            <div class="task-item">
+              <div class="task-item-title">Design Guidelines Update</div>
+              <div class="task-item-meta">Priority: Medium · Effort: 3pts</div>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <div class="task-column-title">🔄 In Progress</div>
+            <div class="task-item">
+              <div class="task-item-title">Dos & Don'ts Documentation</div>
+              <div class="task-item-meta">Assigned: Sarah · 3 days</div>
+            </div>
+            <div class="task-item">
+              <div class="task-item-title">Sorting UX Refinement</div>
+              <div class="task-item-meta">Assigned: Mike · 2 days</div>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <div class="task-column-title">👀 In Review</div>
+            <div class="task-item">
+              <div class="task-item-title">Sticky Header Behavior</div>
+              <div class="task-item-meta">Reviewer: Design Lead</div>
+            </div>
+            <div class="task-item">
+              <div class="task-item-title">Mobile Responsiveness</div>
+              <div class="task-item-meta">Reviewer: Design Lead</div>
+            </div>
+          </div>
+
+          <div class="task-column">
+            <div class="task-column-title">✅ Done</div>
+            <div class="task-item">
+              <div class="task-item-title">Component Specs Finalized</div>
+              <div class="task-item-meta">Completed 2 weeks ago</div>
+            </div>
+            <div class="task-item">
+              <div class="task-item-title">Figma Library Updated</div>
+              <div class="task-item-meta">Completed 10 days ago</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;">
+          <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:12px;">📄 Design Resources</div>
+          <div style="display:grid;gap:12px;font-size:12px;color:var(--text-2);">
+            <div style="border-bottom:1px solid var(--border);padding-bottom:12px;">
+              <div style="font-weight:600;color:var(--text-1);margin-bottom:4px;">Figma File</div>
+              <div>BillDeskUI / Components / Table · 8 variants with auto-layout</div>
+            </div>
+            <div style="border-bottom:1px solid var(--border);padding-bottom:12px;">
+              <div style="font-weight:600;color:var(--text-1);margin-bottom:4px;">Construction Methods</div>
+              <div>Spacing rules · State variants · Color tokens · Typography scale</div>
+            </div>
+            <div>
+              <div style="font-weight:600;color:var(--text-1);margin-bottom:4px;">Accessibility Checklist</div>
+              <div>WCAG 2.1 AA/AAA · Focus management · Keyboard navigation · ARIA labels</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEV TEAM VIEW FOR TABLE -->
+      <div class="hub-view" id="table-dev">
+        <div class="comp-grid" style="margin-bottom:28px;">
+          <div class="comp-card">
+            <div class="comp-header">
+              <div class="comp-name">Table Component</div>
+              <span class="badge b-ok"><span class="bdot"></span>LIVE</span>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row">
+                <span class="comp-label">Version</span>
+                <span class="comp-value">v1.8.2</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Framework</span>
+                <span class="comp-value">React</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Last Release</span>
+                <span class="comp-value">5 days ago</span>
+              </div>
+              <div class="comp-row">
+                <span class="comp-label">Test Coverage</span>
+                <span class="comp-value">87%</span>
+              </div>
+            </div>
+            <div class="comp-footer">Latest: Added sorting API improvements</div>
+          </div>
+        </div>
+
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:20px;">
+          <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:16px;">Installation</div>
+          <div style="background:var(--canvas);border:1px solid var(--border);border-radius:6px;padding:12px;font-family:monospace;font-size:11px;overflow-x:auto;color:var(--text-2);">npm install @billdesk-ui/table@latest</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;">
+          <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+            <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:12px;">Props API</div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:11px;">
+              <div><span style="font-weight:600;">columns</span> — array of column definitions</div>
+              <div><span style="font-weight:600;">data</span> — row data array</div>
+              <div><span style="font-weight:600;">sortable</span> — enable column sorting</div>
+              <div><span style="font-weight:600;">selectable</span> — enable row selection</div>
+              <div><span style="font-weight:600;">sticky</span> — sticky header & first column</div>
+              <div><span style="font-weight:600;">onSort</span> — sort callback</div>
+              <div><span style="font-weight:600;">onSelect</span> — selection callback</div>
+            </div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+            <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:12px;">Breaking Changes (v1.8)</div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:11px;color:var(--orange);">
+              <div>⚠ Renamed <code>onHeaderClick</code> to <code>onSort</code></div>
+              <div>⚠ Changed <code>sortOrder</code> prop structure</div>
+              <div>⚠ Updated ARIA attributes for headers</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:10px;padding:20px;background:var(--canvas);">
+          <div style="font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:12px;">Documentation Links</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:11px;">
+            <div><a href="#" style="color:var(--orange);text-decoration:none;font-weight:500;">→ API Documentation</a></div>
+            <div><a href="#" style="color:var(--orange);text-decoration:none;font-weight:500;">→ TypeScript Definitions</a></div>
+            <div><a href="#" style="color:var(--orange);text-decoration:none;font-weight:500;">→ GitHub Repository</a></div>
+            <div><a href="#" style="color:var(--orange);text-decoration:none;font-weight:500;">→ CodeSandbox Examples</a></div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /page-table -->
+
+  <footer class="footer">
+    <div class="footer-brand">Component<em>Hub</em> · DLS</div>
+    <div class="footer-meta">v1.0.0 · Built for HatioDev<br>Real-time component ecosystem tracking</div>
+  </footer>
+
+  <!-- Accessibility Audit Modal -->
+  <div id="a11yModal">
+    <div class="a11y-modal-content">
+      <div class="a11y-modal-header">
+        <h2>Accessibility Audit Report</h2>
+        <button class="a11y-close-btn" onclick="closeA11yModal()">✕</button>
+      </div>
+
+      <div class="a11y-modal-body">
+        <!-- Summary Score -->
+        <div class="a11y-summary">
+          <div class="a11y-score-box">
+            <div class="a11y-score-value">92%</div>
+            <div class="a11y-score-label">WCAG 2.1 AA Compliant</div>
+          </div>
+          <div class="a11y-stats">
+            <div class="a11y-stat-item">
+              <span>Passed Checks</span>
+              <span class="a11y-stat-value" style="color:#0A8F5C;">42</span>
+            </div>
+            <div class="a11y-stat-item">
+              <span>Failed Checks</span>
+              <span class="a11y-stat-value" style="color:#C0392B;">2</span>
+            </div>
+            <div class="a11y-stat-item">
+              <span>N/A Checks</span>
+              <span class="a11y-stat-value">1</span>
+            </div>
+            <div class="a11y-stat-item">
+              <span style="font-size:10px;color:var(--text-3);">Last Audit: May 21, 2026</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accessibility Checklist Categories -->
+        <div class="a11y-categories">
+          <!-- Keyboard Interaction -->
+          <div class="a11y-category" id="category-keyboard-interaction">
+            <button class="a11y-cat-header" onclick="toggleCategory('keyboard-interaction')" aria-expanded="false">
+              <span>Keyboard Interaction</span>
+              <span class="a11y-cat-status pass">✓ 3/3 Passed</span>
+            </button>
+            <div class="a11y-cat-checks">
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Enter and Space toggle accordion</div>
+                <div class="a11y-check-desc">Native handles this automatically. If using custom elements, both keys must be manually bound.</div>
+                <div class="a11y-check-wcag">WCAG 2.1.1 Keyboard (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Tab moves focus through triggers in DOM order</div>
+                <div class="a11y-check-desc">Standard tab behavior. No tab trapping or skipping should occur on accordion triggers.</div>
+                <div class="a11y-check-wcag">WCAG 2.1.1 Keyboard (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Tab into open panel focuses first interactive element</div>
+                <div class="a11y-check-desc">After opening panel, pressing Tab should move focus to first button/input inside the panel.</div>
+                <div class="a11y-check-wcag">WCAG 2.1.1 Keyboard (Level A)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Focus Management -->
+          <div class="a11y-category" id="category-focus-management">
+            <button class="a11y-cat-header" onclick="toggleCategory('focus-management')" aria-expanded="false">
+              <span>Focus Management & Visibility</span>
+              <span class="a11y-cat-status fail">✗ 1/4 Failed</span>
+            </button>
+            <div class="a11y-cat-checks">
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Trigger button has visible focus indicator</div>
+                <div class="a11y-check-desc">Focus indicator is not suppressed by outline:none without replacement.</div>
+                <div class="a11y-check-wcag">WCAG 2.4.7 Focus Visible (Level AA)</div>
+              </div>
+              <div class="a11y-check-item fail">
+                <div class="a11y-check-title">Focus ring contrast meets 3:1 against adjacent colors</div>
+                <div class="a11y-check-desc">Current focus ring color does not meet 3:1 contrast ratio against button surface.</div>
+                <div class="a11y-check-wcag">WCAG 1.4.3 Contrast (Minimum) (Level AA)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Focus moves back to trigger when panel collapses</div>
+                <div class="a11y-check-desc">Programmatic focus management prevents focus loss on panel collapse.</div>
+                <div class="a11y-check-wcag">WCAG 2.4.3 Focus Order (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Focus indicator minimum size and contrast</div>
+                <div class="a11y-check-desc">2px outline with sufficient contrast visible against both light and dark themes.</div>
+                <div class="a11y-check-wcag">WCAG 2.4.11 Focus Visible (Level AA)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Screen Reader Announcement -->
+          <div class="a11y-category" id="category-screen-reader">
+            <button class="a11y-cat-header" onclick="toggleCategory('screen-reader')" aria-expanded="false">
+              <span>Screen Reader Announcement</span>
+              <span class="a11y-cat-status pass">✓ 3/3 Passed</span>
+            </button>
+            <div class="a11y-cat-checks">
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Button announced with expanded/collapsed state</div>
+                <div class="a11y-check-desc">Screen reader announces "[Title], collapsed button" or "[Title], expanded button".</div>
+                <div class="a11y-check-wcag">WCAG 4.1.2 Name, Role, Value (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Icon is hidden from assistive tech</div>
+                <div class="a11y-check-desc">Decorative chevron/arrow has aria-hidden="true" to prevent noise in announcement.</div>
+                <div class="a11y-check-wcag">WCAG 4.1.2 Name, Role, Value (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Trigger label is unique and self-descriptive</div>
+                <div class="a11y-check-desc">Label is specific to component, not generic like "Learn More" or "See Details".</div>
+                <div class="a11y-check-wcag">WCAG 4.1.2 Name, Role, Value (Level A)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Color Contrast -->
+          <div class="a11y-category" id="category-contrast">
+            <button class="a11y-cat-header" onclick="toggleCategory('contrast')" aria-expanded="false">
+              <span>Color Contrast & Visual States</span>
+              <span class="a11y-cat-status pass">✓ 4/4 Passed</span>
+            </button>
+            <div class="a11y-cat-checks">
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Text contrast ≥ 4.5:1 against background</div>
+                <div class="a11y-check-desc">Trigger text meets WCAG AA contrast requirements (4.5:1 minimum for small text).</div>
+                <div class="a11y-check-wcag">WCAG 1.4.3 Contrast (Minimum) (Level AA)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Expanded/collapsed state not color-only</div>
+                <div class="a11y-check-desc">State is communicated via chevron direction, not just color change.</div>
+                <div class="a11y-check-wcag">WCAG 1.4.1 Use of Color (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Disabled state contrast ≥ 3:1</div>
+                <div class="a11y-check-desc">Disabled button meets 3:1 contrast; not just greyed out.</div>
+                <div class="a11y-check-wcag">WCAG Best Practice</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Hover/active states distinguishable in grayscale</div>
+                <div class="a11y-check-desc">State changes visible without color (via border, scale, weight, or brightness).</div>
+                <div class="a11y-check-wcag">WCAG 1.4.1 Use of Color (Level A)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Motion & Animation -->
+          <div class="a11y-category" id="category-motion">
+            <button class="a11y-cat-header" onclick="toggleCategory('motion')" aria-expanded="false">
+              <span>Motion & Animation</span>
+              <span class="a11y-cat-status pass">✓ 2/2 Passed</span>
+            </button>
+            <div class="a11y-cat-checks">
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Animation respects prefers-reduced-motion</div>
+                <div class="a11y-check-desc">Panel expand/collapse animation is disabled when user prefers reduced motion.</div>
+                <div class="a11y-check-wcag">WCAG 2.3.3 Animation from Interactions (Level AAA)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">No flashing or abrupt jumps in reduced-motion mode</div>
+                <div class="a11y-check-desc">Panel fades smoothly or appears instantly without jarring transitions.</div>
+                <div class="a11y-check-wcag">WCAG 2.3.2 Animation from Interactions (Level A)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Touch & Mobile -->
+          <div class="a11y-category" id="category-touch">
+            <button class="a11y-cat-header" onclick="toggleCategory('touch')" aria-expanded="false">
+              <span>Touch, Mobile & Pointer</span>
+              <span class="a11y-cat-status fail">✗ 1/3 Failed</span>
+            </button>
+            <div class="a11y-cat-checks">
+              <div class="a11y-check-item fail">
+                <div class="a11y-check-title">Tap target minimum size 44×44px</div>
+                <div class="a11y-check-desc">Trigger height is 32px; needs padding or larger visual size to meet WCAG AAA.</div>
+                <div class="a11y-check-wcag">WCAG 2.5.5 Target Size (Level AAA)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Focus ring contrast for touch users</div>
+                <div class="a11y-check-desc">Focus ring meets 3:1 contrast against adjacent colors for touch device users.</div>
+                <div class="a11y-check-wcag">WCAG 1.4.3 Contrast (Minimum) (Level AA)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Focus returns to button on panel close</div>
+                <div class="a11y-check-desc">Programmatic focus management works on touch devices via assistive tech.</div>
+                <div class="a11y-check-wcag">WCAG 2.4.3 Focus Order (Level A)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Semantic Structure -->
+          <div class="a11y-category" id="category-semantic">
+            <button class="a11y-cat-header" onclick="toggleCategory('semantic')" aria-expanded="false">
+              <span>Semantic Structure</span>
+              <span class="a11y-cat-status pass">✓ 3/3 Passed</span>
+            </button>
+            <div class="a11y-cat-checks">
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Trigger is native &lt;button&gt; element</div>
+                <div class="a11y-check-desc">Uses semantic &lt;button&gt; not &lt;div&gt; with role="button".</div>
+                <div class="a11y-check-wcag">WCAG 4.1.2 Name, Role, Value (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Panel wrapped in semantic container</div>
+                <div class="a11y-check-desc">Panel has role="region" or &lt;section&gt; to help screen readers understand structure.</div>
+                <div class="a11y-check-wcag">WCAG 1.3.1 Info and Relationships (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">Trigger linked to panel with aria-controls</div>
+                <div class="a11y-check-desc">Button has aria-controls="panel-id" establishing relationship to panel content.</div>
+                <div class="a11y-check-wcag">WCAG 4.1.2 Name, Role, Value (Level A)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ARIA States -->
+          <div class="a11y-category" id="category-aria">
+            <button class="a11y-cat-header" onclick="toggleCategory('aria')" aria-expanded="false">
+              <span>ARIA States & Properties</span>
+              <span class="a11y-cat-status pass">✓ 3/3 Passed</span>
+            </button>
+            <div class="a11y-cat-checks">
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">aria-expanded toggles between true/false</div>
+                <div class="a11y-check-desc">Button announces expanded/collapsed state via aria-expanded attribute.</div>
+                <div class="a11y-check-wcag">WCAG 4.1.2 Name, Role, Value (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">aria-hidden on collapsed panels</div>
+                <div class="a11y-check-desc">Hidden panels have aria-hidden="true" to prevent announcement by screen readers.</div>
+                <div class="a11y-check-wcag">WCAG 4.1.2 Name, Role, Value (Level A)</div>
+              </div>
+              <div class="a11y-check-item pass">
+                <div class="a11y-check-title">aria-controls references panel ID</div>
+                <div class="a11y-check-desc">Button aria-controls matches panel ID for semantic relationship.</div>
+                <div class="a11y-check-wcag">WCAG 4.1.2 Name, Role, Value (Level A)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Findings & Remediation -->
+        <div class="a11y-findings">
+          <h3>Remediation Required (2 items)</h3>
+
+          <div class="a11y-finding-item">
+            <div class="a11y-finding-title">Focus ring contrast insufficient in dark mode</div>
+            <div class="a11y-finding-severity">High Priority</div>
+            <div class="a11y-finding-remediation">Update CSS focus ring color from #D0D5E0 to #F26522 to meet 3:1 contrast ratio against #1A1A2E background.</div>
+          </div>
+
+          <div class="a11y-finding-item">
+            <div class="a11y-finding-title">Trigger tap target below 44px minimum</div>
+            <div class="a11y-finding-severity">High Priority</div>
+            <div class="a11y-finding-remediation">Increase button height from 32px to 44px or add padding: 12px 16px to extend hit area without changing visual size.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function switchView(view) {
+  // Hide all views
+  document.querySelectorAll('.hub-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.hub-tab').forEach(t => t.classList.remove('active'));
+
+  // Show selected view & tab
+  document.getElementById('view-' + view).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function switchComponentView(view) {
+  // Hide all component views
+  document.querySelectorAll('#table-stakeholder, #table-design, #table-dev').forEach(v => v.classList.remove('active'));
+  // Deactivate all tabs
+  document.querySelectorAll('#table-detail .hub-tab').forEach(t => t.classList.remove('active'));
+
+  // Show selected view & tab
+  document.getElementById(view).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function showComponentDetail(component, e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  // Switch to table page
+  const pageOverview = document.getElementById('page-overview');
+  const pageTable = document.getElementById('page-table');
+
+  pageOverview.classList.remove('active');
+  pageTable.classList.add('active');
+
+  // Update active nav
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+
+  // Set flag to prevent observer from updating nav
+  isDetailViewActive = true;
+
+  // Scroll to top
+  window.scrollTo(0, 0);
+}
+
+function backToComponents(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  // Switch to overview page
+  const pageOverview = document.getElementById('page-overview');
+  const pageTable = document.getElementById('page-table');
+
+  pageOverview.classList.add('active');
+  pageTable.classList.remove('active');
+
+  // Reset flag to allow observer to work again
+  isDetailViewActive = false;
+
+  // Set Overview as active
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const overviewLink = document.querySelector('[href="#overview"]');
+  if (overviewLink) overviewLink.classList.add('active');
+
+  // Scroll to top
+  window.scrollTo(0, 0);
+}
+
+function filterStatus(el, status) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  // In production, this would filter the grid
+}
+
+function filterTask(el, status) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function filterDevs(el, framework) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Active nav on scroll (only for list view)
+let isDetailViewActive = false;
+
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('[id]');
+
+const observer = new IntersectionObserver((entries) => {
+  // Only update nav if we're not in detail view
+  if (!isDetailViewActive) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(l => {
+          l.classList.remove('active');
+          if (l.getAttribute('href') === '#' + id) l.classList.add('active');
+        });
+      }
+    });
+  }
+}, { threshold: 0.25, rootMargin: '-10% 0px -65% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// Accessibility Modal Functions
+function openA11yModal() {
+  const modal = document.getElementById('a11yModal');
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
+  document.body.style.overflow = 'hidden';
+}
+
+function closeA11yModal() {
+  const modal = document.getElementById('a11yModal');
+  modal.classList.remove('active');
+  setTimeout(() => modal.style.display = 'none', 300);
+  document.body.style.overflow = 'auto';
+}
+
+function toggleCategory(categoryId) {
+  const category = document.getElementById(`category-${categoryId}`);
+  const header = category.querySelector('.a11y-cat-header');
+  category.classList.toggle('expanded');
+  header.setAttribute('aria-expanded', category.classList.contains('expanded'));
+}
+
+// Close modal when clicking outside
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('a11yModal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeA11yModal();
+    });
+  }
+});
+
+// Escape key closes modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeA11yModal();
+});
+
+// Register GSAP Plugins
+gsap.registerPlugin(ScrollTrigger);
+
+// Initialize motion animations on page load
+document.addEventListener('DOMContentLoaded', () => {
+  initializeMotionAnimations();
+});
+
+function initializeMotionAnimations() {
+  // Metric Cards - Scroll Reveal Animation
+  const metricCards = document.querySelectorAll('.metric-card');
+  if (metricCards.length > 0) {
+    metricCards.forEach((card, index) => {
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 80%',
+          once: true,
+          markers: false
+        },
+        opacity: 1,
+        duration: 0.6,
+        delay: index * 0.08,
+        ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        transform: 'translateY(0) scale(1)'
+      });
+    });
+  }
+
+  // Component Cards - Staggered Entrance & Hover
+  const compCards = document.querySelectorAll('.comp-card');
+  if (compCards.length > 0) {
+    compCards.forEach((card, index) => {
+      // Entrance animation
+      gsap.from(card, {
+        opacity: 0,
+        duration: 0.5,
+        delay: index * 0.05,
+        ease: 'power2.out',
+        transform: 'translateY(20px) scale(0.95)'
+      });
+
+      // Hover effects with GSAP
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          transform: 'translateY(-4px) scale(1.02)',
+          duration: 0.3,
+          ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+        });
+      });
+
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          transform: 'translateY(0) scale(1)',
+          duration: 0.3,
+          ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+        });
+      });
+    });
+  }
+
+  // Filter Pills - Entrance Animation
+  const filterPills = document.querySelectorAll('.filter-pill');
+  if (filterPills.length > 0) {
+    gsap.from(filterPills, {
+      opacity: 0,
+      duration: 0.4,
+      stagger: 0.05,
+      ease: 'power2.out',
+      transform: 'translateX(-8px)'
+    });
+  }
+
+  // Section Eyebrows & Titles - Stagger Reveal
+  const eyebrows = document.querySelectorAll('.section-eyebrow');
+  const titles = document.querySelectorAll('.section-title');
+
+  eyebrows.forEach((eyebrow, index) => {
+    gsap.from(eyebrow, {
+      scrollTrigger: {
+        trigger: eyebrow,
+        start: 'top 85%',
+        once: true
+      },
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power1.out',
+      transform: 'translateY(8px)'
+    });
+  });
+
+  titles.forEach((title, index) => {
+    gsap.from(title, {
+      scrollTrigger: {
+        trigger: title,
+        start: 'top 85%',
+        once: true
+      },
+      opacity: 0,
+      duration: 0.5,
+      delay: 0.1,
+      ease: 'power1.out',
+      transform: 'translateY(12px)'
+    });
+  });
+
+  // Button Focus Ring Animation
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach(button => {
+    button.addEventListener('focus', () => {
+      gsap.to(button, {
+        duration: 0.2,
+        boxShadow: `0 0 0 3px rgba(242, 101, 34, 0.2), inset 0 0 0 2px #F26522`
+      });
+    });
+
+    button.addEventListener('blur', () => {
+      gsap.to(button, {
+        duration: 0.2,
+        boxShadow: 'none'
+      });
+    });
+  });
+
+  // Accessibility Category Expand/Collapse Animation
+  const categoryHeaders = document.querySelectorAll('.a11y-cat-header');
+  categoryHeaders.forEach(header => {
+    header.addEventListener('click', () => {
+      const category = header.closest('.a11y-category');
+      const isExpanding = !category.classList.contains('expanded');
+
+      // Add visual feedback
+      gsap.to(header, {
+        duration: 0.2,
+        color: isExpanding ? '#F26522' : '#0D1526'
+      });
+    });
+  });
+
+  // Hero Section - Subtle Background Animation
+  const hero = document.querySelector('.hero');
+  if (hero && hero.style.display !== 'none') {
+    gsap.to(hero, {
+      scrollTrigger: {
+        trigger: hero,
+        start: 'top center',
+        end: 'bottom center',
+        scrub: 0.5
+      },
+      opacity: 0.8,
+      ease: 'none'
+    });
+  }
+
+  // Parallax effect for sections
+  const sections = document.querySelectorAll('.section');
+  sections.forEach((section) => {
+    gsap.from(section, {
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 60%',
+        once: true
+      },
+      opacity: 0,
+      duration: 0.6,
+      ease: 'power2.out'
+    });
+  });
+}
+
+// Re-initialize animations when view switches
+const originalSwitchView = switchView;
+window.switchView = function(view) {
+  originalSwitchView(view);
+  setTimeout(() => {
+    initializeMotionAnimations();
+  }, 100);
+};
+
+const originalSwitchComponentView = switchComponentView;
+window.switchComponentView = function(view) {
+  originalSwitchComponentView(view);
+  setTimeout(() => {
+    initializeMotionAnimations();
+  }, 100);
+};
+</script>
+
+</body>
+</html>
