@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Component Guide — BillDesk DLS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --orange: #F26522;
+      --orange-hover: #D9541A;
+      --orange-light: #FEF0E8;
+      --orange-xlight: #FFF8F4;
+      --dark: #1A1A2E;
+      --canvas: #FFFFFF;
+      --surface: #F7F8FA;
+      --surface-2: #F0F2F6;
+      --text-1: #0D1526;
+      --text-2: #4A5568;
+      --text-3: #8A97AC;
+      --border: #E2E8F0;
+      --border-2: #CBD5E0;
+      --success: #0A8F5C;
+      --f: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--f);
+      background: var(--canvas);
+      color: var(--text-1);
+      overflow-x: hidden;
+    }
+
+    /* ── TOP NAVIGATION ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--border);
+      padding: 0 56px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .logo {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-1);
+    }
+
+    .logo em { color: var(--orange); font-style: normal; }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+    }
+
+    .nav-link {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s ease, border-color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link:hover { color: var(--text-1); }
+    .nav-link.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+    .nav-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-secondary {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--canvas);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    .btn-primary {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: var(--orange);
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--orange-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(242, 101, 34, 0.2);
+    }
+
+    /* ── HERO SECTION ── */
+    .hero {
+      margin-top: 64px;
+      padding: 80px 56px;
+      background: linear-gradient(135deg, var(--canvas) 0%, var(--orange-xlight) 100%);
+      border-bottom: 1px solid var(--border);
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(242, 101, 34, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 680px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--orange);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      color: var(--text-1);
+      margin-bottom: 16px;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 560px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 56px;
+    }
+
+    /* ── SECTION NAVIGATION ── */
+    .section-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin: 48px 0 0;
+      position: sticky;
+      top: 64px;
+      background: var(--canvas);
+      z-index: 100;
+    }
+
+    .section-nav-link {
+      padding: 16px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-2);
+      text-decoration: none;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .section-nav-link:hover {
+      color: var(--text-1);
+    }
+
+    .section-nav-link.active {
+      color: var(--orange);
+      border-bottom-color: var(--orange);
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeInUp 0.6s ease 0.2s forwards;
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--orange);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.2;
+      color: var(--text-1);
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.7;
+      max-width: 640px;
+      margin-bottom: 32px;
+    }
+
+    /* ── OVERVIEW SECTION ── */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .feature-card {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--canvas);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      opacity: 0;
+      transform: translateY(12px) scale(0.95);
+    }
+
+    .feature-card:nth-child(1) { animation: fadeInUp 0.5s ease 0.1s forwards; }
+    .feature-card:nth-child(2) { animation: fadeInUp 0.5s ease 0.2s forwards; }
+    .feature-card:nth-child(3) { animation: fadeInUp 0.5s ease 0.3s forwards; }
+    .feature-card:nth-child(4) { animation: fadeInUp 0.5s ease 0.4s forwards; }
+
+    .feature-card:hover {
+      border-color: var(--orange);
+      box-shadow: 0 8px 24px rgba(242, 101, 34, 0.1);
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--orange-light);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      font-size: 20px;
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-1);
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.5;
+    }
+
+    /* ── BADGES ── */
+    .badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge.live {
+      background: rgba(10, 143, 92, 0.1);
+      color: var(--success);
+    }
+
+    .badge.version {
+      background: var(--surface);
+      color: var(--text-2);
+    }
+
+    /* ── DESIGN SECTION ── */
+    .design-tokens {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .token-group {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--canvas);
+    }
+
+    .token-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .token-item {
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+
+    .token-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .token-name {
+      color: var(--text-2);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .token-value {
+      color: var(--text-3);
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+    }
+
+    /* ── DEV SECTION ── */
+    .code-block {
+      background: var(--dark);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .code-block code {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #e8e8e8;
+      line-height: 1.6;
+    }
+
+    .code-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      padding: 40px 56px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1023px) {
+      nav { padding: 0 24px; }
+      .hero { padding: 60px 24px; }
+      main { padding: 0 24px; }
+      .hero h1 { font-size: 40px; }
+    }
+
+    @media (max-width: 639px) {
+      nav { padding: 0 16px; }
+      .hero { padding: 48px 16px; }
+      main { padding: 0 16px; }
+      .hero h1 { font-size: 32px; }
+      .section-title { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav>
+  <div class="nav-left">
+    <div class="logo">Bill<em>Desk</em></div>
+    <div class="nav-links">
+      <a href="#overview" class="nav-link active" onclick="switchSection('overview', event)">Overview</a>
+      <a href="#design" class="nav-link" onclick="switchSection('design', event)">Design</a>
+      <a href="#dev" class="nav-link" onclick="switchSection('dev', event)">Dev</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="btn-secondary">Figma</button>
+    <button class="btn-primary">GitHub Repo</button>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Component Documentation</div>
+    <h1>Table Component</h1>
+    <p class="hero-desc">Flexible, accessible data table for displaying structured information with sorting, filtering, pagination, row selection, and expandable rows. Built with semantic HTML and full WCAG 2.1 AA compliance.</p>
+    <div class="hero-cta">
+      <button class="btn-primary">View Storybook</button>
+      <button class="btn-secondary">View Code</button>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<main>
+
+  <!-- SECTION NAVIGATION -->
+  <div class="section-nav">
+    <a href="#overview" class="section-nav-link active" onclick="switchSection('overview', event)">Overview</a>
+    <a href="#design" class="section-nav-link" onclick="switchSection('design', event)">Design Guidelines</a>
+    <a href="#dev" class="section-nav-link" onclick="switchSection('dev', event)">Development</a>
+  </div>
+
+  <!-- OVERVIEW SECTION -->
+  <section class="section" id="overview">
+    <div class="section-eyebrow">Introduction</div>
+    <h2 class="section-title">Component Overview</h2>
+    <p class="section-desc">The Table component is the foundation for data presentation in the BillDesk Design Language. It supports complex interactions and provides accessibility out of the box.</p>
+
+    <div class="badges">
+      <span class="badge live">● LIVE</span>
+      <span class="badge version">v1.2.0</span>
+      <span style="font-size:12px;color:var(--text-3);">Last updated: May 21, 2026</span>
+    </div>
+
+    <div style="margin-bottom:48px;">
+      <div class="section-eyebrow">Key Features</div>
+      <div class="overview-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Sortable Columns</div>
+          <div class="feature-desc">Click headers to sort ascending/descending with visual indicators</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">☑️</div>
+          <div class="feature-title">Row Selection</div>
+          <div class="feature-desc">Multi-select with checkboxes and keyboard navigation</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">▶️</div>
+          <div class="feature-title">Expandable Rows</div>
+          <div class="feature-desc">Reveal detailed information for each row on demand</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📌</div>
+          <div class="feature-title">Sticky Headers</div>
+          <div class="feature-desc">Column pinning and frozen headers on scroll</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGN GUIDELINES SECTION -->
+  <section class="section" id="design">
+    <div class="section-eyebrow">Visual Specifications</div>
+    <h2 class="section-title">Design Guidelines</h2>
+    <p class="section-desc">Component specifications, design tokens, and best practices for implementing the Table in your designs.</p>
+
+    <div style="margin-bottom:48px;">
+      <div class="section-eyebrow">Design Tokens</div>
+      <div class="design-tokens">
+        <div class="token-group">
+          <div class="token-label">Colors</div>
+          <div class="token-item">
+            <div class="token-name">Primary</div>
+            <div class="token-value">#F26522</div>
+          </div>
+          <div class="token-item">
+            <div class="token-name">Text Primary</div>
+            <div class="token-value">#0D1526</div>
+          </div>
+          <div class="token-item">
+            <div class="token-name">Border</div>
+            <div class="token-value">#E2E8F0</div>
+          </div>
+        </div>
+        <div class="token-group">
+          <div class="token-label">Typography</div>
+          <div class="token-item">
+            <div class="token-name">Header Font</div>
+            <div class="token-value">Inter 600</div>
+          </div>
+          <div class="token-item">
+            <div class="token-name">Body Font</div>
+            <div class="token-value">Inter 400</div>
+          </div>
+          <div class="token-item">
+            <div class="token-name">Size</div>
+            <div class="token-value">12-13px</div>
+          </div>
+        </div>
+        <div class="token-group">
+          <div class="token-label">Spacing</div>
+          <div class="token-item">
+            <div class="token-name">Cell Padding</div>
+            <div class="token-value">12px 16px</div>
+          </div>
+          <div class="token-item">
+            <div class="token-name">Header Height</div>
+            <div class="token-value">40px</div>
+          </div>
+          <div class="token-item">
+            <div class="token-name">Row Height</div>
+            <div class="token-value">44px</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:48px;">
+      <div class="section-eyebrow">Best Practices</div>
+      <div style="background:var(--surface);padding:24px;border-radius:10px;border:1px solid var(--border);">
+        <h4 style="font-size:14px;font-weight:600;margin-bottom:16px;color:var(--text-1);">Do's</h4>
+        <ul style="list-style:none;padding:0;gap:8px;display:flex;flex-direction:column;">
+          <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="width:4px;height:4px;background:var(--success);border-radius:50%;flex-shrink:0;"></span>
+            Use for large datasets with 50+ rows
+          </li>
+          <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="width:4px;height:4px;background:var(--success);border-radius:50%;flex-shrink:0;"></span>
+            Include pagination for better performance
+          </li>
+          <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;">
+            <span style="width:4px;height:4px;background:var(--success);border-radius:50%;flex-shrink:0;"></span>
+            Provide sorting on important columns
+          </li>
+        </ul>
+        <h4 style="font-size:14px;font-weight:600;margin:24px 0 16px;color:var(--text-1);">Don'ts</h4>
+        <ul style="list-style:none;padding:0;gap:8px;display:flex;flex-direction:column;">
+          <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="width:4px;height:4px;background:#C0392B;border-radius:50%;flex-shrink:0;"></span>
+            Don't use for simple lists (use List component instead)
+          </li>
+          <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;">
+            <span style="width:4px;height:4px;background:#C0392B;border-radius:50%;flex-shrink:0;"></span>
+            Don't truncate text without tooltip
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVELOPMENT SECTION -->
+  <section class="section" id="dev">
+    <div class="section-eyebrow">Implementation</div>
+    <h2 class="section-title">Development Guide</h2>
+    <p class="section-desc">Technical implementation details, API documentation, and code examples for developers integrating the Table component.</p>
+
+    <div style="margin-bottom:48px;">
+      <div class="code-label">React Implementation</div>
+      <div class="code-block"><code>&lt;Table
+  columns={[
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'status', label: 'Status' }
+  ]}
+  data={tableData}
+  onSort={handleSort}
+  pagination={{ pageSize: 10 }}
+/&gt;</code></div>
+    </div>
+
+    <div style="margin-bottom:48px;">
+      <div class="code-label">Props</div>
+      <div style="background:var(--surface);padding:20px;border-radius:10px;border:1px solid var(--border);">
+        <div style="font-size:12px;line-height:1.8;color:var(--text-2);">
+          <strong>columns:</strong> Array of column definitions<br>
+          <strong>data:</strong> Array of row objects<br>
+          <strong>sortable:</strong> Enable column sorting (boolean)<br>
+          <strong>selectable:</strong> Show checkboxes for row selection<br>
+          <strong>pagination:</strong> Pagination config object<br>
+          <strong>onSort:</strong> Callback for sort changes<br>
+          <strong>onSelect:</strong> Callback for row selection
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:48px;">
+      <div class="code-label">Accessibility Features</div>
+      <ul style="list-style:none;padding:0;gap:8px;display:flex;flex-direction:column;">
+        <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="width:4px;height:4px;background:var(--success);border-radius:50%;flex-shrink:0;"></span>
+          Semantic HTML table structure with proper headings
+        </li>
+        <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="width:4px;height:4px;background:var(--success);border-radius:50%;flex-shrink:0;"></span>
+          ARIA labels and roles for screen readers
+        </li>
+        <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="width:4px;height:4px;background:var(--success);border-radius:50%;flex-shrink:0;"></span>
+          Full keyboard navigation support
+        </li>
+        <li style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;">
+          <span style="width:4px;height:4px;background:var(--success);border-radius:50%;flex-shrink:0;"></span>
+          WCAG 2.1 AA compliant color contrast
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="code-label">Browser Support</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;">
+        <div style="padding:12px;background:var(--surface);border-radius:6px;font-size:12px;text-align:center;color:var(--text-2);">Chrome 90+</div>
+        <div style="padding:12px;background:var(--surface);border-radius:6px;font-size:12px;text-align:center;color:var(--text-2);">Firefox 88+</div>
+        <div style="padding:12px;background:var(--surface);border-radius:6px;font-size:12px;text-align:center;color:var(--text-2);">Safari 14+</div>
+        <div style="padding:12px;background:var(--surface);border-radius:6px;font-size:12px;text-align:center;color:var(--text-2);">Edge 90+</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p>Table Component Guide — BillDesk Design Language System v1.0</p>
+  <p style="margin-top:8px;">Last updated: May 21, 2026 | GitHub | Figma | Storybook</p>
+</footer>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  function switchSection(section, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    // Update nav links
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    document.querySelectorAll('.section-nav-link').forEach(link => link.classList.remove('active'));
+
+    event.currentTarget.classList.add('active');
+
+    // Find corresponding section nav link
+    const sectionLink = document.querySelector(`.section-nav-link[href="#${section}"]`);
+    if (sectionLink) sectionLink.classList.add('active');
+
+    // Scroll to section
+    const target = document.getElementById(section);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Hero animation on load
+  document.addEventListener('DOMContentLoaded', () => {
+    gsap.from('.hero-content', {
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.2,
+      ease: 'power2.out',
+      transform: 'translateY(24px)'
+    });
+
+    // Feature cards
+    document.querySelectorAll('.feature-card').forEach((card, index) => {
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          duration: 0.3,
+          transform: 'translateY(-4px) scale(1.02)',
+          ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+        });
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          duration: 0.3,
+          transform: 'translateY(0) scale(1)',
+          ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+        });
+      });
+    });
+
+    // Scroll reveal for sections
+    document.querySelectorAll('.section').forEach(section => {
+      gsap.from(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+          once: true
+        },
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        transform: 'translateY(24px)'
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
